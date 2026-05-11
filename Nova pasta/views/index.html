@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>FUZE — Login</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.0/dist/apexcharts.min.js"></script>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ======================== TOASTS ======================== -->
+<div class="toasts" id="TOASTS"></div>
+
+<!-- ======================== LOGIN ======================== -->
+<div id="LOGIN-SCREEN">
+<div class="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">FUZE</div>
+    <div class="login-sub" style="margin-bottom:20px">Painel de Gerenciamento IPTV</div>
+
+    <div class="demo-section">
+      <div class="demo-label">Entrar como demo</div>
+      <button class="demo-btn" onclick="doLogin('admin')">
+        <div class="demo-icon di-adm"><i class="fas fa-crown"></i></div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--hd)">super-fuze</div><div style="font-size:11px;color:var(--mu)">Administrador Master — acesso total</div></div>
+        <i class="fas fa-arrow-right ms-auto" style="color:var(--mu);font-size:12px"></i>
+      </button>
+      <button class="demo-btn" onclick="doLogin('revenda')">
+        <div class="demo-icon di-rev"><i class="fas fa-user-tie"></i></div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--hd)">Slayker</div><div style="font-size:11px;color:var(--mu)">Revenda Nível 1 — gerencia clientes e sub-revendas</div></div>
+        <i class="fas fa-arrow-right ms-auto" style="color:var(--mu);font-size:12px"></i>
+      </button>
+      <button class="demo-btn" onclick="doLogin('usuario')">
+        <div class="demo-icon di-usr"><i class="fas fa-user"></i></div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--hd)">juaniptv1</div><div style="font-size:11px;color:var(--mu)">Usuário Cliente — gerencia plano e pagamentos</div></div>
+        <i class="fas fa-arrow-right ms-auto" style="color:var(--mu);font-size:12px"></i>
+      </button>
+    </div>
+
+    <div style="position:relative;text-align:center;margin-bottom:18px">
+      <hr style="border-color:var(--brd)">
+      <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--cbg);padding:0 10px;color:var(--mu);font-size:11.5px">ou faça login manualmente</span>
+    </div>
+
+    <div class="mb-3">
+      <label class="fl">Usuário</label>
+      <input type="text" class="fc" id="LU" placeholder="Digite seu usuário" value="super-fuze">
+    </div>
+    <div class="mb-3">
+      <label class="fl">Senha</label>
+      <div class="sw w-100"><input type="password" class="fc" id="LP" placeholder="••••••••" value="••••••" style="padding-right:40px">
+        <button style="position:absolute;right:10px;background:none;border:none;color:var(--mu);cursor:pointer;font-size:13px" onclick="togglePwd()"><i class="fas fa-eye" id="EYEI"></i></button>
+      </div>
+    </div>
+    <button class="bp w-100 justify-content-center" style="padding:11px;font-size:14px" onclick="doLogin('auto')">
+      <i class="fas fa-right-to-bracket"></i> Entrar
+    </button>
+    <div class="mt-3 text-center"><a href="#" style="color:var(--mu);font-size:12px">Esqueceu a senha?</a></div>
+    <div class="mt-3 d-flex justify-content-center gap-3">
+      <button class="tb" onclick="toggleTheme()" title="Tema" style="width:32px;height:32px"><i class="fas fa-sun" id="LTH"></i></button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ======================== APP PANEL ======================== -->
+<div id="APP-PANEL" style="display:none">
+<div class="ovl" id="OVL" onclick="closeSB()"></div>
+<div class="app d-flex">
+
+<!-- ASIDE -->
+<aside class="aside" id="ASIDE">
+  <div class="aside-tb">
+    <div class="aside-logo">FUZE</div>
+    <a href="#" class="a-user" id="SB-USER">super-fuze</a>
+    <div class="a-metric" id="SB-ROLE">Administrador Master</div>
+    <div class="a-metric mt-1" id="SB-CRED"></div>
+    <div class="mt-1" id="SB-BADGE"></div>
+  </div>
+  <div class="aside-menu" id="SIDEBAR-MENU"><!-- filled by role --></div>
+</aside>
+
+<!-- CONTENT -->
+<div class="cw" id="CW">
+  <header class="ah">
+    <button class="mbb" id="MBB" onclick="toggleSB()"><i class="fas fa-bars"></i></button>
+    <div class="pth"><h1 id="PTH">Dashboard</h1><small id="PTH-ROLE"></small></div>
+    <div class="topbar">
+      <button class="tb act" onclick="toast('Ações rápidas disponíveis','i')"><i class="fas fa-terminal"></i></button>
+      <button class="tb" onclick="toast('Nenhuma notificação nova','i')"><i class="fas fa-bell"></i></button>
+      <button class="tb" onclick="toggleTheme()" id="THBTN"><i class="fas fa-sun"></i></button>
+      <button class="tb" onclick="doLogout()" title="Sair"><i class="fas fa-right-from-bracket"></i></button>
+    </div>
+  </header>
+
+  <main class="pc" id="MAIN-CONTENT">
+    <!-- pages rendered here by role -->
+  </main>
+
+  <footer style="background:var(--cbg);border-top:1px solid var(--brd);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--mu)">
+    <div>2026© <a href="#" style="color:var(--mu);text-decoration:none">FUZE</a> <span class="ms-1">v3.78</span></div>
+    <div id="FOOTER-ROLE"></div>
+  </footer>
+</div><!-- cw -->
+</div><!-- app -->
+
+<!-- MOBILE NAV -->
+<nav class="mnav"><div class="mnavi" id="MOB-NAV"></div></nav>
+</div><!-- APP-PANEL -->
+
+<!-- ======================== MODALS ======================== -->
+
+<!-- Modal: Criar/Editar Cliente -->
+<div class="modal-ov" id="M-CLIENTE">
+  <div class="mbox">
+    <div class="mhead"><span class="mtitle" id="M-CLI-TITLE">Adicionar Cliente</span><button class="mclose" onclick="closeModal('M-CLIENTE')"><i class="fas fa-xmark"></i></button></div>
+    <div class="mbody">
+      <div class="row g-3">
+        <div class="col-12 col-md-6"><label class="fl">Usuário *</label><input type="text" class="fc" id="cli-user" placeholder="Ex: joaotv2026"></div>
+        <div class="col-12 col-md-6"><label class="fl">Senha *</label><input type="text" class="fc" id="cli-pwd" placeholder="Automático se vazio"></div>
+        <div class="col-12 col-md-6"><label class="fl">Nome Completo</label><input type="text" class="fc" id="cli-nome" placeholder="Nome do cliente"></div>
+        <div class="col-12 col-md-6"><label class="fl">WhatsApp</label><input type="text" class="fc" id="cli-wpp" placeholder="+55 (85) 99999-9999"></div>
+        <div class="col-12 col-md-6"><label class="fl">Servidor *</label><select class="fs" id="cli-srv"><option value="fzplay">Fz Play</option><option value="maxplayer">Max Player</option></select></div>
+        <div class="col-12 col-md-6"><label class="fl">Plano *</label><select class="fs" id="cli-plano"><option value="1">TESTE COMPLETO (0 cred • 4h)</option><option value="3">1 MES COMPLETO (1 cred • R$30)</option><option value="4">1 MES SEM ADULTOS (1 cred • R$30)</option><option value="5">4 MESES COMPLETO (3 cred • R$90)</option></select></div>
+        <div class="col-12 col-md-6"><label class="fl">Conexões Simultâneas</label><select class="fs" id="cli-conn"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+        <div class="col-12 col-md-6"><label class="fl">Observação</label><input type="text" class="fc" id="cli-obs" placeholder="Opcional"></div>
+      </div>
+      <div class="warn-b mt-3" id="cli-cost-info"><i class="fas fa-coins me-2" style="color:#ffa800"></i>Selecione um plano para ver o custo em créditos.</div>
+    </div>
+    <div class="mfoot"><button class="bsec" onclick="closeModal('M-CLIENTE')">Cancelar</button><button class="bp" onclick="saveCliente()"><i class="fas fa-floppy-disk"></i> Salvar</button></div>
+  </div>
+</div>
+
+<!-- Modal: Criar/Editar Revenda -->
+<div class="modal-ov" id="M-REVENDA">
+  <div class="mbox">
+    <div class="mhead"><span class="mtitle" id="M-REV-TITLE">Adicionar Revenda</span><button class="mclose" onclick="closeModal('M-REVENDA')"><i class="fas fa-xmark"></i></button></div>
+    <div class="mbody">
+      <div class="row g-3">
+        <div class="col-12 col-md-6"><label class="fl">Usuário *</label><input type="text" class="fc" id="rev-user" placeholder="Ex: novarevenda123"></div>
+        <div class="col-12 col-md-6"><label class="fl">Senha *</label><input type="password" class="fc" id="rev-pwd" placeholder="Mínimo 6 caracteres"></div>
+        <div class="col-12 col-md-6"><label class="fl">Nome Completo</label><input type="text" class="fc" id="rev-nome" placeholder="Nome do responsável"></div>
+        <div class="col-12 col-md-6"><label class="fl">WhatsApp</label><input type="text" class="fc" id="rev-wpp" placeholder="+55 (00) 00000-0000"></div>
+        <div class="col-12 col-md-6"><label class="fl">E-mail</label><input type="email" class="fc" id="rev-email" placeholder="email@exemplo.com"></div>
+        <div class="col-12 col-md-6"><label class="fl">Nível de Revenda</label><select class="fs" id="rev-nivel"><option value="1">Nível 1</option><option value="2">Nível 2</option></select></div>
+        <div class="col-12 col-md-6"><label class="fl">Créditos Iniciais</label><input type="number" class="fc" id="rev-cred" placeholder="0" min="0" oninput="checkRevCredits()"></div>
+        <div class="col-12">
+          <div class="err-b" id="rev-cred-warn" style="display:none"><i class="fas fa-triangle-exclamation me-2" style="color:#f1416c"></i>Créditos insuficientes!</div>
+        </div>
+      </div>
+    </div>
+    <div class="mfoot"><button class="bsec" onclick="closeModal('M-REVENDA')">Cancelar</button><button class="bp" onclick="saveRevenda()"><i class="fas fa-floppy-disk"></i> Salvar</button></div>
+  </div>
+</div>
+
+<!-- Modal: Adicionar Créditos a Revenda -->
+<div class="modal-ov" id="M-ADDCRED">
+  <div class="mbox">
+    <div class="mhead"><span class="mtitle">Transferir Créditos</span><button class="mclose" onclick="closeModal('M-ADDCRED')"><i class="fas fa-xmark"></i></button></div>
+    <div class="mbody">
+      <div class="cred-box" style="margin-bottom:16px">
+        <i class="fas fa-coins" style="font-size:28px;color:#009ef7"></i>
+        <div><div style="font-size:11px;color:var(--mu)">Seus créditos disponíveis</div>
+          <div class="cred-n" id="ADDCRED-MY"></div></div>
+      </div>
+      <div class="mb-3"><label class="fl">Para a Revenda</label><input type="text" class="fc" id="addcred-rev" readonly></div>
+      <div class="mb-3">
+        <label class="fl">Quantidade de Créditos *</label>
+        <input type="number" class="fc" id="addcred-qty" placeholder="Ex: 10" min="1" oninput="checkAddCred()">
+      </div>
+      <div class="mb-3"><label class="fl">Observação</label><input type="text" class="fc" id="addcred-obs" placeholder="Opcional"></div>
+      <div class="info-b" id="addcred-preview" style="display:none">
+        <i class="fas fa-arrow-right me-2" style="color:#009ef7"></i>
+        Você terá <b id="addcred-after">—</b> créditos após a transferência.
+      </div>
+    </div>
+    <div class="mfoot"><button class="bsec" onclick="closeModal('M-ADDCRED')">Cancelar</button><button class="bp" onclick="doAddCredits()"><i class="fas fa-paper-plane"></i> Transferir</button></div>
+  </div>
+</div>
+
+<!-- Modal: Confirmar Exclusão -->
+<div class="modal-ov" id="M-DELETE">
+  <div class="mbox">
+    <div class="mhead"><span class="mtitle" style="color:#f1416c"><i class="fas fa-triangle-exclamation me-2"></i>Confirmar Exclusão</span><button class="mclose" onclick="closeModal('M-DELETE')"><i class="fas fa-xmark"></i></button></div>
+    <div class="mbody">
+      <p id="DELETE-MSG" style="color:var(--tx);margin:0">Tem certeza que deseja excluir?</p>
+      <div class="warn-b mt-3"><i class="fas fa-info-circle me-2" style="color:#ffa800"></i>Esta ação não pode ser desfeita.</div>
+    </div>
+    <div class="mfoot"><button class="bsec" onclick="closeModal('M-DELETE')">Cancelar</button><button class="bd" id="DELETE-CONFIRM"><i class="fas fa-trash-can"></i> Excluir</button></div>
+  </div>
+</div>
+
+<!-- Modal: Renovar Plano (Admin/Revenda) -->
+<div class="modal-ov" id="M-RENOVAR">
+  <div class="mbox">
+    <div class="mhead"><span class="mtitle">Renovar Plano do Cliente</span><button class="mclose" onclick="closeModal('M-RENOVAR')"><i class="fas fa-xmark"></i></button></div>
+    <div class="mbody">
+      <div class="mb-3"><label class="fl">Cliente</label><input type="text" class="fc" id="ren-cli" readonly></div>
+      <div class="mb-3"><label class="fl">Plano Atual</label><input type="text" class="fc" id="ren-plan-cur" readonly></div>
+      <div class="mb-3"><label class="fl">Novo Plano</label>
+        <select class="fs" id="ren-plan" onchange="updateRenCost()">
+          <option value="3" data-cred="1" data-dur="30">1 MES COMPLETO — 1 crédito • R$30</option>
+          <option value="4" data-cred="1" data-dur="30">1 MES SEM ADULTOS — 1 crédito • R$30</option>
+          <option value="5" data-cred="3" data-dur="120">4 MESES COMPLETO — 3 créditos • R$90</option>
+          <option value="6" data-cred="5" data-dur="180">6 MESES COMPLETO — 5 créditos • R$150</option>
+        </select>
+      </div>
+      <div class="info-b"><i class="fas fa-coins me-2" style="color:#009ef7"></i>Custo: <b id="ren-cost-lbl">1 crédito</b> • Novo vencimento: <b id="ren-new-date">—</b></div>
+    </div>
+    <div class="mfoot"><button class="bsec" onclick="closeModal('M-RENOVAR')">Cancelar</button><button class="bs" onclick="doRenovar()"><i class="fas fa-calendar-plus"></i> Renovar</button></div>
+  </div>
+</div>
+
+<!-- Modal: Pagamento PIX (Usuário) -->
+<div class="modal-ov" id="M-PAYMENT">
+  <div class="mbox lg">
+    <div class="mhead"><span class="mtitle" id="PAY-TITLE">Renovar Plano — PIX</span><button class="mclose" onclick="closeModal('M-PAYMENT')"><i class="fas fa-xmark"></i></button></div>
+    <div class="mbody">
+      <!-- Steps -->
+      <div class="steps mb-3">
+        <div class="step act" id="step1"><div class="step-n">1</div><div class="step-lbl">Escolher Plano</div></div>
+        <div class="step" id="step2"><div class="step-n">2</div><div class="step-lbl">Pagar PIX</div></div>
+        <div class="step" id="step3"><div class="step-n">3</div><div class="step-lbl">Confirmado</div></div>
+      </div>
+
+      <!-- Step 1: Escolher plano -->
+      <div id="pay-step1">
+        <div class="row g-3">
+          <div class="col-12">
+            <div class="plan-card" id="pcard-3" onclick="selectPlan(3,'1 MES COMPLETO','R$ 30,00')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div><div style="font-size:14px;font-weight:700;color:var(--hd)">1 MÊS COMPLETO</div>
+                  <div style="font-size:12px;color:var(--mu)">Fz Play • 2 conexões • Canais + VODs + Adultos</div></div>
+                <div style="font-size:18px;font-weight:800;color:#009ef7">R$ 30,00</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="plan-card" id="pcard-4" onclick="selectPlan(4,'1 MES SEM ADULTOS','R$ 30,00')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div><div style="font-size:14px;font-weight:700;color:var(--hd)">1 MÊS SEM ADULTOS</div>
+                  <div style="font-size:12px;color:var(--mu)">Fz Play • 2 conexões • Canais + VODs</div></div>
+                <div style="font-size:18px;font-weight:800;color:#009ef7">R$ 30,00</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="plan-card" id="pcard-5" onclick="selectPlan(5,'4 MESES COMPLETO','R$ 90,00')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:var(--hd)">4 MESES COMPLETO <span class="ba ba-g" style="font-size:9px">Melhor Custo</span></div>
+                  <div style="font-size:12px;color:var(--mu)">Fz Play • 2 conexões • Completo • R$22,50/mês</div>
+                </div>
+                <div style="font-size:18px;font-weight:800;color:#009ef7">R$ 90,00</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="plan-card" id="pcard-6" onclick="selectPlan(6,'6 MESES COMPLETO','R$ 150,00')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:var(--hd)">6 MESES COMPLETO <span class="ba ba-p" style="font-size:9px">VIP</span></div>
+                  <div style="font-size:12px;color:var(--mu)">Fz Play • 4 conexões • Completo • R$25/mês</div>
+                </div>
+                <div style="font-size:18px;font-weight:800;color:#009ef7">R$ 150,00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mfoot" style="padding:14px 0 0;border-top:1px solid var(--brd);margin-top:16px">
+          <button class="bsec" onclick="closeModal('M-PAYMENT')">Cancelar</button>
+          <button class="bp" id="pay-btn1" onclick="goPayStep2()" disabled><i class="fas fa-arrow-right"></i> Prosseguir para Pagamento</button>
+        </div>
+      </div>
+
+      <!-- Step 2: PIX -->
+      <div id="pay-step2" style="display:none">
+        <div class="info-b mb-3"><i class="fas fa-info-circle me-2" style="color:#009ef7"></i>Plano: <b id="pix-plan-name">—</b> • Valor: <b id="pix-plan-price">—</b></div>
+        <div style="text-align:center">
+          <div style="font-size:12.5px;color:var(--mu);margin-bottom:10px">Escaneie o QR Code com o app do seu banco</div>
+          <!-- Fake QR Grid -->
+          <div style="width:160px;height:160px;background:#fff;border-radius:8px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;padding:12px">
+            <svg width="136" height="136" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+              <rect width="10" height="10" fill="white"/>
+              <rect x="0" y="0" width="4" height="4" fill="none" stroke="black" stroke-width=".7"/>
+              <rect x="1.3" y="1.3" width="1.4" height="1.4" fill="black"/>
+              <rect x="6" y="0" width="4" height="4" fill="none" stroke="black" stroke-width=".7"/>
+              <rect x="7.3" y="1.3" width="1.4" height="1.4" fill="black"/>
+              <rect x="0" y="6" width="4" height="4" fill="none" stroke="black" stroke-width=".7"/>
+              <rect x="1.3" y="7.3" width="1.4" height="1.4" fill="black"/>
+              <rect x="5" y="4" width="1" height="1" fill="black"/>
+              <rect x="6" y="5" width="1" height="1" fill="black"/>
+              <rect x="5" y="6" width="2" height="1" fill="black"/>
+              <rect x="7" y="6" width="1" height="2" fill="black"/>
+              <rect x="9" y="5" width="1" height="1" fill="black"/>
+              <rect x="4" y="4" width="1" height="2" fill="black"/>
+              <rect x="6" y="7" width="1" height="1" fill="black"/>
+              <rect x="8" y="8" width="2" height="2" fill="black"/>
+            </svg>
+          </div>
+          <div style="font-size:12px;color:var(--mu);margin-bottom:6px">Ou copie o código PIX:</div>
+          <div style="background:var(--ibg);border:1px solid var(--brd);border-radius:6px;padding:9px 13px;font-size:10.5px;font-family:monospace;word-break:break-all;cursor:pointer;text-align:left;margin-bottom:14px" onclick="copyPix()">00020126580014BR.GOV.BCB.PIX0136{random_pix}5204000053039865406<span id="pix-amount">30.00</span>5802BR5911FUZE IPTV LT6008SAO PAULO62070503***6304<span id="pix-hash">A1B2</span></div>
+          <button class="bs mb-3" onclick="copyPix()"><i class="fas fa-copy"></i> Copiar Código PIX</button>
+          <div style="margin-bottom:6px;font-size:12.5px;color:var(--mu)">Expira em</div>
+          <div class="pix-timer" id="PIX-TIMER">14:59</div>
+        </div>
+        <div class="mfoot" style="padding:14px 0 0;border-top:1px solid var(--brd);margin-top:16px">
+          <button class="bsec" onclick="backPayStep1()"><i class="fas fa-arrow-left"></i> Voltar</button>
+          <button class="bp" onclick="simulatePayment()"><i class="fas fa-bolt"></i> Simular Pagamento Aprovado</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Confirmado -->
+      <div id="pay-step3" style="display:none">
+        <div style="text-align:center;padding:20px 0">
+          <div style="width:70px;height:70px;border-radius:50%;background:rgba(11,183,131,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;color:#0bb783">
+            <i class="fas fa-circle-check"></i>
+          </div>
+          <h4 style="color:#0bb783;margin-bottom:6px">Pagamento Confirmado!</h4>
+          <p style="color:var(--mu);font-size:13px;margin-bottom:16px">Seu plano foi renovado com sucesso.</p>
+          <div style="background:var(--ibg);border:1px solid var(--brd);border-radius:8px;padding:14px 18px;text-align:left;margin-bottom:16px">
+            <div class="d-flex justify-content-between mb-2"><span style="color:var(--mu)">Plano</span><b id="conf-plan">—</b></div>
+            <div class="d-flex justify-content-between mb-2"><span style="color:var(--mu)">Valor Pago</span><b id="conf-price" style="color:#0bb783">—</b></div>
+            <div class="d-flex justify-content-between mb-2"><span style="color:var(--mu)">Novo Vencimento</span><b id="conf-exp">—</b></div>
+            <div class="d-flex justify-content-between"><span style="color:var(--mu)">ID Transação</span><small id="conf-txid" style="color:var(--mu)">—</small></div>
+          </div>
+          <button class="bp" onclick="closeModal('M-PAYMENT')"><i class="fas fa-check"></i> Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Detalhes do Cliente/Revenda (view) -->
+<div class="modal-ov" id="M-DETAILS">
+  <div class="mbox lg">
+    <div class="mhead"><span class="mtitle" id="DET-TITLE">Detalhes</span><button class="mclose" onclick="closeModal('M-DETAILS')"><i class="fas fa-xmark"></i></button></div>
+    <div class="mbody" id="DET-BODY"></div>
+    <div class="mfoot"><button class="bp" onclick="closeModal('M-DETAILS')">Fechar</button></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/app.js"></script>
+
+</body>
+</html>

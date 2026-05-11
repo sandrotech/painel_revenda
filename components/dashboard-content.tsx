@@ -10,6 +10,11 @@ import {
   MoreHorizontal,
   Plus
 } from "lucide-react"
+import { CustomersList } from "@/components/customers-list"
+import { MoviesGrid } from "@/components/movies-grid"
+import { SeriesGrid } from "@/components/series-grid"
+import { ChannelsGrid } from "@/components/channels-grid"
+import { PackagesList } from "@/components/packages-list"
 import {
   Card,
   CardContent,
@@ -26,30 +31,30 @@ interface DashboardContentProps {
 
 const stats = [
   {
-    title: "Total de Projetos",
-    value: "24",
-    change: "+12%",
-    trend: "up",
-    icon: FolderKanban,
-  },
-  {
-    title: "Membros da Equipe",
-    value: "8",
-    change: "+2",
+    title: "Total de Clientes",
+    value: "154",
+    change: "+8%",
     trend: "up",
     icon: Users,
   },
   {
-    title: "Tarefas Ativas",
+    title: "Clientes Ativos",
     value: "142",
-    change: "-5%",
+    change: "+5",
+    trend: "up",
+    icon: Activity,
+  },
+  {
+    title: "Vencimentos Hoje",
+    value: "3",
+    change: "-2",
     trend: "down",
     icon: Activity,
   },
   {
-    title: "Taxa de Conclusão",
-    value: "87%",
-    change: "+3%",
+    title: "Créditos",
+    value: "45",
+    change: "OK",
     trend: "up",
     icon: TrendingUp,
   },
@@ -69,10 +74,10 @@ export function DashboardContent({ activeSection }: DashboardContentProps) {
         {/* Welcome Section */}
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-bold text-foreground">
-            Bem-vindo de volta, João! 👋
+            Bem-vindo ao Painel Pro! 👋
           </h2>
           <p className="text-muted-foreground">
-            Aqui está um resumo do que está acontecendo nos seus projetos.
+            Aqui está um resumo em tempo real da sua operação de streaming.
           </p>
         </div>
 
@@ -205,6 +210,46 @@ export function DashboardContent({ activeSection }: DashboardContentProps) {
             </Card>
           ))}
         </div>
+      </div>
+    )
+  }
+
+  if (activeSection === "clientes") {
+    return (
+      <div className="p-4 md:p-6">
+        <CustomersList />
+      </div>
+    )
+  }
+
+  if (activeSection === "filmes") {
+    return (
+      <div className="p-4 md:p-6">
+        <MoviesGrid />
+      </div>
+    )
+  }
+
+  if (activeSection === "series") {
+    return (
+      <div className="p-4 md:p-6">
+        <SeriesGrid />
+      </div>
+    )
+  }
+
+  if (activeSection === "canais") {
+    return (
+      <div className="p-4 md:p-6">
+        <ChannelsGrid />
+      </div>
+    )
+  }
+
+  if (activeSection === "pacotes") {
+    return (
+      <div className="p-4 md:p-6">
+        <PackagesList />
       </div>
     )
   }

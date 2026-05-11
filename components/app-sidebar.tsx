@@ -4,8 +4,13 @@ import {
   LayoutDashboard, 
   FolderKanban, 
   Settings,
+  Users,
   ChevronLeft,
-  LogOut
+  LogOut,
+  Tv,
+  Film,
+  PlayCircle,
+  Package
 } from "lucide-react"
 import {
   Sidebar,
@@ -29,9 +34,29 @@ const menuItems = [
     icon: LayoutDashboard,
   },
   {
-    id: "projetos",
-    title: "Projetos",
-    icon: FolderKanban,
+    id: "clientes",
+    title: "Clientes",
+    icon: Users,
+  },
+  {
+    id: "canais",
+    title: "Canais TV",
+    icon: Tv,
+  },
+  {
+    id: "filmes",
+    title: "Filmes",
+    icon: Film,
+  },
+  {
+    id: "series",
+    title: "Séries",
+    icon: PlayCircle,
+  },
+  {
+    id: "pacotes",
+    title: "Pacotes",
+    icon: Package,
   },
   {
     id: "configuracoes",
@@ -54,14 +79,14 @@ export function AppSidebar({ activeSection, onSectionChange, onLogout }: AppSide
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center gap-3 px-2 py-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground font-bold text-sm">
-            A
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-sm shadow-[0_0_10px_rgba(var(--primary),0.5)]">
+            PRP
           </div>
           <span className={cn(
-            "font-semibold text-sidebar-foreground transition-opacity",
+            "font-bold text-sidebar-foreground transition-opacity tracking-tight",
             isCollapsed && "opacity-0"
           )}>
-            Acme Inc
+            Revenda Pro
           </span>
         </div>
       </SidebarHeader>

@@ -37,11 +37,13 @@ export function LoginForm({ onLogin }: LoginFormProps) {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary mb-4">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary mb-4 shadow-[0_0_20px_rgba(var(--primary),0.3)]">
             <LogIn className="w-6 h-6 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground">Acme Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Gerencie seus projetos com eficiência</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+            Painel Revenda Pro
+          </h1>
+          <p className="text-muted-foreground mt-2">Gestão inteligente de streaming e usuários</p>
         </div>
 
         <Card className="border-border/50 shadow-lg">
